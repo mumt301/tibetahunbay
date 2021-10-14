@@ -1,0 +1,405 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Assignment 4</title>
+        <link rel="stylesheet" href="audiocomparisondesign.css"/>
+    </head>
+    <body>
+        <h1>Comparison of Audio Compression Methods</h1>
+
+
+        <div id="audio_comparison_table"></div>
+
+        <script>
+
+
+
+            const header = ["File Name", "Compression Algorithm", "Compression Bit-Rate",
+                "Original File Size", "Compressed File Size", "Compression Ratio", "Link to Original Audio",
+                "Link to Compressed Audio", "Link to Residual Audio"]
+            let audios = [{
+                "File Name": "Rock",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "Low",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "465 KB",
+                "Compression Ratio": "0.05",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ogg_low.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ogg_low.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "Low-Mid",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "520 KB",
+                "Compression Ratio": "0.06",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ogg_low-mid.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ogg_low-mid.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "High-Mid",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "827 KB",
+                "Compression Ratio": "0.09",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ogg_high-mid.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ogg_high-mid.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "High",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "1,809 KB",
+                "Compression Ratio": "0.2",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ogg_high.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ogg_high.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "96 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "723 KB",
+                "Compression Ratio": "0.08",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ac3_96.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ac3_96.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "128 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "964 KB",
+                "Compression Ratio": "0.11",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ac3_128.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ac3_128.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "192 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "1,446 KB",
+                "Compression Ratio": "0.17",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ac3_192.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ac3_192.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "320 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "2,410 KB",
+                "Compression Ratio": "0.28",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_ac3_320.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_ac3_320.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "98 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "975 KB",
+                "Compression Ratio": "0.11",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_m4a_98.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_m4a_98.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "128 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "999 KB",
+                "Compression Ratio": "0.11",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_m4a_128.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_m4a_128.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "192 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "1,960 KB",
+                "Compression Ratio": "0.22",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_m4a_192.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_m4a_192.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "320 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "1,839 KB",
+                "Compression Ratio": "0.21",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_m4a_320.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_m4a_320.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "96 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "675 KB",
+                "Compression Ratio": "0.08",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_mp3_96.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_mp3_96.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "128 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "911 KB",
+                "Compression Ratio": "0.1",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_mp3_128.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_mp3_128.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "192 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "1,386 KB",
+                "Compression Ratio": "0.16",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_mp3_192.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_mp3_192.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Rock",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "320 kbps",
+                "Original File Size": "8,676 KB",
+                "Compressed File Size": "2,412 KB",
+                "Compression Ratio": "0.28",
+                "Link to Original Audio": '<a href="Rock_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Rock_mp3_320.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Rock_residual_mp3_320.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "Low",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "258 KB",
+                "Compression Ratio": "0.03",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ogg_low.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ogg_low.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "Low-Mid",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "325 KB",
+                "Compression Ratio": "0.04",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ogg_low-mid.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ogg_low-mid.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "High-Mid",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "582 KB",
+                "Compression Ratio": "0.07",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ogg_high-mid.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ogg_high-mid.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "OGG",
+                "Compression Bit-Rate": "High",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,155 KB",
+                "Compression Ratio": "0.14",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ogg_high.ogg">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ogg_high.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "96 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "720 KB",
+                "Compression Ratio": "0.09",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ac3_96.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ac3_96.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "128 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "960 KB",
+                "Compression Ratio": "0.12",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ac3_128.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ac3_128.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "192 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,440 KB",
+                "Compression Ratio": "0.18",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ac3_192.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ac3_192.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "AC3",
+                "Compression Bit-Rate": "320 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "2,400 KB",
+                "Compression Ratio": "0.3",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_ac3_320.ac3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_ac3_320.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "98 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,054 KB",
+                "Compression Ratio": "0.13",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_m4a_98.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_m4a_98.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "128 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,071 KB",
+                "Compression Ratio": "0.13",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_m4a_128.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_m4a_128.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "192 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,135 KB",
+                "Compression Ratio": "0.14",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_m4a_192.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_m4a_192.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "M4A",
+                "Compression Bit-Rate": "320 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,128 KB",
+                "Compression Ratio": "0.14",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_m4a_320.m4a">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_m4a_320.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "96 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "673 KB",
+                "Compression Ratio": "0.08",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_mp3_96.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_mp3_96.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "128 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "837 KB",
+                "Compression Ratio": "0.1",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_mp3_128.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_mp3_128.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "192 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,265 KB",
+                "Compression Ratio": "0.16",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_mp3_192.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_mp3_192.wav">Residual Audio</a>'
+            },
+            {
+                "File Name": "Piano",
+                "Compression Algorithm": "MP3",
+                "Compression Bit-Rate": "320 kbps",
+                "Original File Size": "7,938 KB",
+                "Compressed File Size": "1,731 KB",
+                "Compression Ratio": "0.22",
+                "Link to Original Audio": '<a href="Piano_original.wav">Original Audio</a>',
+                "Link to Compressed Audio": '<a href="Piano_mp3_320.mp3">Compressed Audio</a>',
+                "Link to Residual Audio": '<a href="Piano_residual_mp3_320.wav">Residual Audio</a>'
+            },
+            ]
+
+ // table from class
+ function audiocomparison() {
+  let table = document.createElement('table');
+  table.id = "audio_comparison_table"
+  let headers = table.insertRow(-1);
+  for (hrow = 0; hrow < header.length; hrow++) {
+let headerrow = document.createElement('th');
+        headerrow.innerHTML = header[hrow];
+ headers.appendChild(headerrow);
+  }
+
+  for (row = 0; row < audios.length; row++) {
+    tr = document.createElement('tr');
+    let audio_data = Object.keys(audios[row]);
+    for (col = 0; col < Object.keys(audios[row]).length; col++) {
+      td = document.createElement('td');
+      tr.appendChild(td);
+      td.innerHTML = audios[row][audio_data[col]];
+    }
+    table.appendChild(tr);
+  }
+  document.getElementById("audio_comparison_table").appendChild(table);
+}
+audiocomparison();
+    
+        </script>
+
+<br> Reminder: As I have discussed with Prof. Néstor, my audacity application does not allow me to fully align m4a and ac3 files with my original file.<br>
+Thus, my residuals for m4a and ac3 files will not sound like two audio files fully aligned and inverted even though I inverted the compressed audio file.
+
+    </body>
+</html>
