@@ -1,0 +1,17 @@
+body{
+    background-color: rgb(223, 223, 62);
+    text-align: left;
+    font-size: 20px;
+    font-family: monospace;
+}
+
+h1 {text-align: left; font-size: 200%; color: black;}
+
+a{text-align: left;}
+
+
+table { text-align: center; padding-top: 20px;}
+
+th {background-color: rgb(196, 145, 3); padding: 5px;}
+
+td {background-color: rgb(211, 199, 176); padding: 5px;}
