@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Assignment 7</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <link rel="stylesheet" href="assignment_7.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js" type="text/JavaScript"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap" rel="stylesheet">
+    <script src="assignment_7.js" type="text/JavaScript"></script>
+    <script src="assignment_7-auxiliary-functions.js" type="text/JavaScript"></script>
+</head>
+
+
+<body>
+    <h1>An online <span id="thereminLogo">Theremin</span> instrument</h1>
+</br>
+    <div id="thereminZone"></div>
+</br>
+
+    <fieldset>
+        <legend>You're Playing:</legend>
+        <p id="notename1"></p>
+        <p id="notename2"></p>
+        <p id="freq1"> </p>
+        <p id="freq2"></p>
+    </fieldset>
+
+    <form method="get" id="theform"> 
+    <fieldset>
+            <legend>Theremin Parameters</legend>
+            <label for="semitones">Interval</label>
+            <select name="semitones" id="semitones">
+                <option value="0">Unison</option>
+                <option value="3">Minor Third</option>
+                <option value="4">Major Third</option>
+                <option value="7">Perfect Fifth</option>
+                <option value="12">Octave</option>
+            </select>
+
+            <label for="oscillator">Wave Type</label>
+            <select name="oscillator" id="oscillator">
+                <option value="sine">Sine</option>
+                <option value="square">Square</option>
+                <option value="triangle">Triangle</option>
+                <option value="sawtooth">Sawtooth</option>
+            </select>
+
+            <label for="minfreq">Minimum Frequency (between 110Hz and 220Hz):</label>
+            <input type="number" id="minfreq" name="minfreq" min="110" max="220" value="220">
+
+            <label for="maxfreq">Minimum Frequency (between 440Hz and 1760Hz):</label>
+            <input type="number" id="maxfreq" name="maxfreq" min="440" max="1760" value="880">
+
+            <input type="submit" value="Upload New Theremin Parameters">
+
+    </fieldset>
+</form>
+</body>
+
+
+</html>
