@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Final Project</title>
+    <link rel="stylesheet" href="finalproject.css">
+
+</head>
+
+
+<body>
+    <div>
+        <h1>Musical Weather Report</h1>
+        
+        <form id="city" class="entry" method="GET">
+            <label for="name">Enter City Name</label>
+            <br></br>
+            <input class="cityname" type="text" name="city" id="name">
+            <br></br>
+            <input class="button" type="submit" value="Submit">
+        </form>
+
+        <img id="clearsky" >
+
+        <h2 id="retrievedcitytitle"></h2>
+        <p class="weatherinfo" id="placeholder"></p>
+    </div>
+
+
+    <div class="video">     
+        <h5 id="musicplayer">Music Player</h5>
+
+         <section id="youtubevideo"> </section>
+  
+        </div>
+<div>
+    <h3 id="choosemusic">Choose Music</h3>
+
+<main>
+
+</main>
+</div>
+
+
+
+<!-- jQuery - Youtube API -->
+<script src='jquery-3.6.0.min.js'></script>
+<script type="text/javascript">
+
+// Javascript references from class exercises, especially the MusicBrainz project. 
+// Also I used this video as a reference to for the Youtube API: https://www.youtube.com/watch?v=9sWEecNUW-o&t=2787s
+// I didn't use another Javascript file because when I tried 'JQuery' only worked in the html file.
+
+        document.getElementById("clearsky").style.visibility = 'hidden';
+        document.getElementById("choosemusic").style.visibility = 'hidden';
+        document.getElementById("musicplayer").style.visibility = 'hidden';
+        document.getElementById("placeholder").style.visibility = 'hidden';
+        document.getElementById("youtubevideo").style.visibility = 'hidden';
+
+
+// Weather API
+function queryWeather() {
+   
+   let params = (new URL(document.location)).searchParams;
+   if (params.has('city')) {
+       let cityName = params.get('city');
+
+       
+       let weatherBaseURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+
+       let weatherAPIKey = "&APPID=ad58b87e21b7329d9a81a95a590faefb";
+       let weatherXML = "&mode=xml";
+       let weatherUnits = "&units=metric";
+
+       let queryURL = weatherBaseURL + cityName + weatherAPIKey + weatherXML + weatherUnits ;
+       httpGet(queryURL, getWeatherInfo);
+
+       
+      
+   }
+}
+
+
+function httpGet(theURL, weFunction) {
+   let xmlHttp = new XMLHttpRequest();
+   
+   xmlHttp.open("GET", theURL);
+   xmlHttp.send();
+   
+   xmlHttp.onreadystatechange = function () {
+       if (this.readyState == 4 && this.status == 200) {
+           weFunction(this); 
+
+        document.getElementById("choosemusic").style.visibility = 'visible';
+        document.getElementById("musicplayer").style.visibility = 'visible';
+        document.getElementById("placeholder").style.visibility = 'visible';
+        document.getElementById("youtubevideo").style.visibility = 'visible';
+       }
+       else {
+        document.getElementById("clearsky").style.visibility = 'hidden';
+        document.getElementById("choosemusic").style.visibility = 'hidden';
+        document.getElementById("musicplayer").style.visibility = 'hidden';
+        document.getElementById("placeholder").style.visibility = 'hidden';
+        document.getElementById("youtubevideo").style.visibility = 'hidden';
+
+
+       }
+           
+       
+   };
+}
+
+// Retrieving weather info
+function getWeatherInfo(xhttp) {
+
+   let retrievedData = xhttp.responseXML; 
+
+   let retrievedCity = retrievedData.getElementsByTagName("city")[0].getAttribute("name");
+   let sky = retrievedData.getElementsByTagName("weather")[0].getAttribute("value");
+   let humidity = retrievedData.getElementsByTagName("humidity")[0].getAttribute("value");
+   let wind = retrievedData.getElementsByTagName("speed")[0].getAttribute("value");
+   let windUnit = retrievedData.getElementsByTagName("speed")[0].getAttribute("unit");
+   let feelsLike = retrievedData.getElementsByTagName("feels_like")[0].getAttribute("value");
+
+
+   let temperature = retrievedData.getElementsByTagName("temperature")[0];
+    let currentTemperature = temperature.getAttribute("value");
+    
+    let retrievedCityTitle = document.getElementById('retrievedcitytitle');
+    retrievedCityTitle.innerHTML = `<b>${retrievedCity}</b> Weather`
+
+    let placeholder = document.getElementById('placeholder');
+    placeholder.innerHTML = `
+    <ul>
+    <li><b>Sky:</b> ${sky}</li>
+    <li><b>Temperature:</b> ${currentTemperature} Celsius</li>
+    <li><b>Humidity:</b> ${humidity}%</li>
+    <li><b>Wind:</b> ${wind} ${windUnit}</li>
+    <li><b>Feels Like:</b> ${feelsLike} Celsius</li>
+    </ul>
+    `
+    console.log(sky);
+
+
+  // Changing the interface according to the retreived weather
+
+    if (sky.includes("rain")){
+        console.log("It is rainy")
+
+        document.body.style.backgroundImage =
+  "url('rain.gif')";
+  document.body.style.backgroundColor =
+  "grey";
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+
+
+        $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OzWx64348LqptFWLED4PbPd';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+
+} 
+else if (sky.includes("drizzle")){
+
+console.log("The sky is rainy/drizzle")
+document.body.style.backgroundImage =
+  "url('rain.gif')";
+  document.body.style.backgroundColor =
+  "grey";
+
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OzWx64348LqptFWLED4PbPd';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+}
+
+else if (sky.includes("clear")){
+
+    console.log("The sky is clear")
+    document.getElementById("clearsky").src =
+  'clearsky.gif';
+  document.getElementById("clearsky").style.visibility = 'visible';
+
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OzjPdh7qs962W5ZFCbnIvBG';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+}
+
+else if (sky.includes("clouds")){
+
+console.log("The sky is cloudy")
+document.body.style.backgroundImage =
+  "url('cloudy.gif')";
+ 
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OwH3aJ5qz2DpbO8e7IslXck';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+}
+
+else if (sky.includes("thunderstorm")){
+
+console.log("The sky is thundery")
+document.body.style.backgroundImage =
+  "url('thunder.gif')";
+  document.body.style.backgroundColor =
+  "grey";
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OwD2LPyJwtOJlqmmknlkmVg';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+}
+
+else if (sky.includes("snow")){
+    
+    console.log("The sky is snowy")
+    document.body.style.backgroundImage =
+  "url('snow.gif')";
+  document.body.style.backgroundColor =
+  "grey";
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OxEEncmfH0v2QhxurOiw4Ug';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+}
+
+else if (sky.includes("sleet")){
+
+console.log("The sky is snowy/sleet")
+document.body.style.backgroundImage =
+  "url('snow.gif')";
+  document.body.style.backgroundColor =
+  "grey";
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OxEEncmfH0v2QhxurOiw4Ug';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+
+}
+
+else if (sky.includes("mist")){
+
+console.log("The sky is misty")
+document.body.style.backgroundImage =
+  "url('fog.png')";
+  document.body.style.backgroundColor =
+  "grey";
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OwENWIsK0SO6C18QGB3dZPZ';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+}
+
+else if (sky.includes("fog")){
+
+console.log("The sky is foggy")
+document.body.style.backgroundImage =
+  "url('fog.png')";
+  document.getElementById("clearsky").style.visibility =
+  'hidden';
+  $(document).ready(function() {
+
+var key = 'AIzaSyDTrr6NQpgvAFWCiiCe4OuwVoSw3wsvPUg';
+var playlistId = 'PLNmAWJwh96OwENWIsK0SO6C18QGB3dZPZ';
+var URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+
+var options = {
+    part: 'snippet',
+    key: key,
+    maxResults: 20,
+    playlistId: playlistId
+}
+
+loadVids();
+
+function loadVids() {
+    $.getJSON(URL, options, function (data) {
+            var id = data.items[0].snippet.resourceId.videoId;
+            mainVid(id);
+            resultsLoop(data);
+
+            
+        })
+}
+
+function mainVid(id) {
+    $("#youtubevideo").html(`<iframe width="560" height="400" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+}
+
+function resultsLoop(data) {
+
+$.each(data.items, function (i, item) {
+
+    var title = item.snippet.title;
+    var vid = item.snippet.resourceId.videoId;
+
+
+    $('main').append(`
+                    
+
+                    <article class="item" data-key="${vid}">
+                        
+                        <div class="details">
+                            <h4>${title}</h4>
+                        </div>
+
+                    </article>
+                `);
+});
+}
+  $('main').on('click', 'article', function () {
+        var id = $(this).attr('data-key');
+        mainVid(id);
+    });
+});
+
+
+}
+}
+window.onload = queryWeather;
+
+
+
+</script>
+
+</body>
+</html>
