@@ -1,4 +1,4 @@
-README:
+# README
 
 Just enter the city you would like to see the information for and press the “Submit” button. The website will give you the appropriate information (Open Weather Map API) and a youtube player (Youtube Data API). 
 
@@ -6,12 +6,12 @@ When you retrieve the information you can choose which music the youtube player 
 
 So far, I haven’t had any browser that did not support this application. 
 
-The javascript code uses the “jQuery” extension to call the Youtube API. 
+The javascript code uses the `jQuery` extension to call the Youtube API. 
 
 The reason why I did not separate the Javascript file was because I was getting errors when I used the jQuery extension on a separate file, so I just merged html and javascript.
 
 
-References:
+# References
 
 - Class exercise: MusicBrainz
 - Youtube API Tutorial: https://www.youtube.com/watch?v=9sWEecNUW-o&t=2787s 
